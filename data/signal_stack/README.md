@@ -1,0 +1,1 @@
+The `signal_stack` folder should contain `.tif`s for the signal of interest.

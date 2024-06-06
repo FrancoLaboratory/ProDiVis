@@ -1,0 +1,1 @@
+The `normalization_stack` folder should contain `.tif`s for the normalization signal, with names, dimensions, and Z's corresponding to the slices in the signal_stack folder.

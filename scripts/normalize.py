@@ -1,24 +1,24 @@
-import os
-import re
-import cv2
+# Built-in imports
+import os, re, cv2, sys, math
+from builtins import len
 import numpy as np
-import tools
-import sys
 from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
-import math
-from builtins import len
+
+# ProDiVis-specific imports
+import tools
 
 
 # Function:
 # Description:
 # Pre-Conditions:
 # Post-Conditions:
+# Will load in any bitdepth as of 06/19/2024
 def get_norm_bool_idxs(norm_slice_paths, bool_cutoff):
-    img1 = cv2.cvtColor(cv2.imread(norm_slice_paths[0]), cv2.COLOR_BGR2GRAY)
+    img1 = cv2.cvtColor(cv2.imread(norm_slice_paths[0], -1), cv2.COLOR_BGR2GRAY)
     slice_bool_cumulative = np.empty(img1.shape, dtype = np.uint8)
     for slice_path in norm_slice_paths:
-        norm_slice = cv2.cvtColor(cv2.imread(slice_path), cv2.COLOR_BGR2GRAY)
+        norm_slice = cv2.cvtColor(cv2.imread(slice_path, -1), cv2.COLOR_BGR2GRAY)
         norm_slice[norm_slice > 0] = 1
         slice_bool_cumulative = slice_bool_cumulative + norm_slice
     final_cumulative = slice_bool_cumulative / len(norm_slice_paths)
@@ -78,8 +78,9 @@ def mean_normalizer(tiff_list, norm_list, threshold, outlier_stddevs, raw_norm, 
 # Description:
 # Pre-Conditions:
 # Post-Conditions:
+# Will load in any bitdepth as of 06/19/2024
 def tiff_mean(normpath, thresh, stddevs, raw_norm, norm_bool):
-    normBW = cv2.cvtColor(cv2.imread(normpath), cv2.COLOR_BGR2GRAY)
+    normBW = cv2.cvtColor(cv2.imread(normpath, -1), cv2.COLOR_BGR2GRAY)
     normBW = normBW.astype(float)
     if type(norm_bool) != int:
         normBW[norm_bool == 0] = np.nan
@@ -95,8 +96,9 @@ def tiff_mean(normpath, thresh, stddevs, raw_norm, norm_bool):
 # Description:
 # Pre-Conditions:
 # Post-Conditions:
+# Will load in any bitdepth as of 06/19/2024
 def tiff_dist(normpath, lower, upper, norm_bool):
-    normBW = cv2.cvtColor(cv2.imread(normpath), cv2.COLOR_BGR2GRAY)
+    normBW = cv2.cvtColor(cv2.imread(normpath, -1), cv2.COLOR_BGR2GRAY)
     normBW = normBW.astype(float)
     if type(norm_bool) != int:
         normBW[norm_bool == 0] = np.nan
@@ -110,8 +112,9 @@ def tiff_dist(normpath, lower, upper, norm_bool):
 # Description:
 # Pre-Conditions:
 # Post-Conditions:
+# Will load in any bitdepth as of 06/19/2024
 def tiff_stats_thresh(normpath, lower, upper, norm_bool):
-    normBW = cv2.cvtColor(cv2.imread(normpath), cv2.COLOR_BGR2GRAY)
+    normBW = cv2.cvtColor(cv2.imread(normpath, -1), cv2.COLOR_BGR2GRAY)
     normBW = normBW.astype(float)
     if type(norm_bool) != int:
         normBW[norm_bool == 0] = np.nan
@@ -120,9 +123,9 @@ def tiff_stats_thresh(normpath, lower, upper, norm_bool):
     normBW[normBW > upper] = np.nan
     return np.nanmean(normBW.flatten())
 
-
+# Will load in any bitdepth as of 06/19/2024
 def thresh(normpath, lower, upper, norm_bool):
-    normBW = cv2.cvtColor(cv2.imread(normpath), cv2.COLOR_BGR2GRAY)
+    normBW = cv2.cvtColor(cv2.imread(normpath, -1), cv2.COLOR_BGR2GRAY)
     normBW = normBW.astype(float)
     if type(norm_bool) != int:
         normBW[norm_bool == 0] = np.nan
@@ -132,20 +135,21 @@ def thresh(normpath, lower, upper, norm_bool):
     flattened = normBW[np.logical_not(np.isnan(normBW))].flatten()
     return flattened
 
+# Will load in any bitdepth as of 06/19/2024
 def thresh_multiply(normpath, norm_bool):
-    normBW = cv2.cvtColor(cv2.imread(normpath), cv2.COLOR_BGR2GRAY)
+    normBW = cv2.cvtColor(cv2.imread(normpath, -1), cv2.COLOR_BGR2GRAY)
     normBW = normBW.astype(float)
     if type(norm_bool) != int:
         normBW[norm_bool == 0] = np.nan
     normBW[normBW == 0] = np.nan
     return np.array(normBW.flatten())
 
-
+# Will load in any bitdepth as of 06/19/2024
 def analyze_images(directory, threshold):
     below_threshold = []
     for image in os.listdir(directory):
         path = os.path.join(directory, image)
-        img = cv2.imread(path, 0)
+        img = cv2.imread(path, -1)
         img = img.astype(float)
         img[img < threshold] = np.nan
         if np.isnan(img).all():
@@ -176,7 +180,8 @@ def mean_normalize(tiffpath, normpath, out_dir, thresh, stddevs, raw_norm, len_l
     if tiffZ != normZ:
         raise ValueError(f"Z-value for reference tiff ({tiffZ}) is not equal to Z-value for normalization tiff ({normZ})")
 
-    tiffBW = cv2.cvtColor(cv2.imread(tiffpath), cv2.COLOR_BGR2GRAY)
+    # Will load in any bitdepth as of 06/19/2024
+    tiffBW = cv2.cvtColor(cv2.imread(tiffpath, -1), cv2.COLOR_BGR2GRAY)
     tiffBW[tiffBW < thresh] = 0
     tiffBW[tiffBW > stddevs] = 0
     tiffBW = (tiffBW / tiff_mean(normpath, thresh, stddevs, raw_norm, norm_bool).astype(np.float64)).astype(np.uint8)

@@ -76,21 +76,32 @@ def norm_dirname(dirpath, dirtype, create = False):
 # Pre-Conditions: Path-like string to valid directory provided
 # Post-Conditions: Returns list of path-like objects to existing tiffs within dir.
 def get_files(folder):
-    tiffs = []
+    image_paths = []
     root_name = ""
+    ext = ""
+
     for root, dirs, files in os.walk(folder):
         for f in files:
+            fname, this_ext = os.path.splitext(f)
             this_name = '_'.join(f.split("_")[:-1])
+
             if root_name == "":
                 root_name = this_name
             elif this_name != root_name:
-                raise ValueError(f"Cannot confirm all images in {folder} are from the same stack. Ensure tiff filenames are all 'imgname_zX.tiff'")
-            if f.split('.')[-1] == 'tif' or f.split('.')[-1] == 'tiff':
-                tiffs.append(os.path.join(root, f))
-    if not len(tiffs):
-        raise ValueError("No tiffs found!")
-    tiffs.sort()
-    return tiffs
+                raise ValueError(f"Cannot confirm all images in {folder} are from the same stack. Ensure image filenames are all 'imgname_zX.<ext>'.")
+
+            if ext == "":
+                ext = this_ext
+            elif this_ext != ext:
+                raise ValueError(f"Connot confirm all images in {folder} have the same file extension.\nFirst extension was {ext}. Second extension was {this_ext}.")
+            
+            image_paths.append(os.path.join(root, f))
+
+    if not len(image_paths):
+        raise ValueError("No images found!")
+
+    image_paths.sort()
+    return image_paths 
 
 
 # Function: get_keyword_files()
@@ -114,16 +125,25 @@ def get_keyword_files(folder, key):
 # Description: Performs min-max scaling on img object (pixel array)
 # Pre-Conditions: Img object provided
 # Post-Conditions: Return img object with pixels min-max scaled.
-def min_max_scale(img):
+def min_max_scale(img, dtype=np.uint8):
     np.seterr(all = 'raise')
 
     minimum = img.min()
     maximum = img.max()
+
+    try:
+        dtype_max = np.iinfo(dtype)
+    except:
+        dtype_max = np.finfo(dtype)
+    
     # The formula for min-max scaling:
     img = (img - minimum) / (maximum - minimum) if maximum - minimum != 0 else (img - minimum) / 1
-    img *= 255
+
     if isinstance(img, np.ma.MaskedArray):
         img = np.ma.getdata(img)
+
+    img = img.astype(dtype)
+    img *= dtype_max
     return img
 
 

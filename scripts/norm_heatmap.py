@@ -27,7 +27,7 @@ output of heatmaps.
 #                 views, and boolean 'norm' (currently non-functional)
 # Post-Conditions: List of composite image objects generated from each view.
 def stack(tiff_list, viewpoints, z_mult, norm = False):
-    shape = cv2.cvtColor(cv2.imread(tiff_list[0]), cv2.COLOR_BGR2GRAY).shape
+    shape = cv2.cvtColor(cv2.imread(tiff_list[0], -1), cv2.COLOR_BGR2GRAY).shape
     stack_size = len(tiff_list)
     img_list = []
     for viewpoint in viewpoints:
@@ -42,7 +42,7 @@ def stack(tiff_list, viewpoints, z_mult, norm = False):
 
     print(f"Generating composites for {', '.join(viewpoints[:-1])} and {viewpoints[-1] if len(viewpoints) > 1 else viewpoints[0]} view(s) from {os.path.dirname(tiff_list[0])}...")
     for idx, tiff in enumerate(tiff_list):
-        img = cv2.imread(tiff)
+        img = cv2.imread(tiff, -1)
         bw = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         if bw.shape != shape:
             raise ValueError("Tiffs in the provided folder not all the same size. Cannot compile composite heatmap.")
@@ -156,7 +156,7 @@ def main():
         raise ValueError('Program call must include "-n" with directory that contains the normalization stack')
     norms = tools.get_files(norm_dir)
 
-    tiffsM = normalize.mean_normalizer(tiffs, norms, threshold, n_stddevs, raw_norm, ig_mon)
+    tiffsM = normalize.mean_normalizer(tiffs, norms, threshold, n_stddevs, raw_norm, ig_mono=False) # ig_mono is currently deprecated so it is always set to False
 
     # Prefix represents file prefix for generated heatmaps
     prefix = f'{stack_dir.split(os.path.sep)[-2]}_{stack_dir.split(os.path.sep)[-1]}' + \

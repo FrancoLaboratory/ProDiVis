@@ -145,15 +145,15 @@ def thresh_multiply(normpath, norm_bool):
     return np.array(normBW.flatten())
 
 # Will load in any bitdepth as of 06/19/2024
-def analyze_images(directory, threshold):
+def analyze_images(norm_images, threshold):
     below_threshold = []
-    for image in os.listdir(directory):
-        path = os.path.join(directory, image)
+    for path in norm_images:
+        print(path)
         img = cv2.imread(path, -1)
-        img = img.astype(float)
+        img = img.astype(np.float32)
         img[img < threshold] = np.nan
         if np.isnan(img).all():
-            below_threshold.append(image)
+            below_threshold.append(path)
     return below_threshold
 
 

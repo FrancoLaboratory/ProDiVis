@@ -8,9 +8,8 @@ from matplotlib.gridspec import GridSpec
 
 SELECTION_PROMPT = "Please select the data you would like to use -" \
  + "\n\t1. Prodivis Data Directory" \
- + "\n\t2. Glioblastoma Sample Data (clone from GitHub)" \
- + "\n\t3. Mouse Heart Sample Data (cloned from GitHub)" \
- + "Your choice (1-3): "
+ + "\n\t2. Prodivis Sample Data (clone from GitHub)" \
+ + "Your choice (1-2): "
 
 
 

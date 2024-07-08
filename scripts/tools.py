@@ -75,22 +75,33 @@ def norm_dirname(dirpath, dirtype, create = False):
 # Description: Gets all files of '.tiff' format in a folder
 # Pre-Conditions: Path-like string to valid directory provided
 # Post-Conditions: Returns list of path-like objects to existing tiffs within dir.
-def get_files(folder):
-    tiffs = []
+def get_files(folder, exclude_ext = []):
+    image_paths = []
     root_name = ""
-    for root, dirs, files in os.walk(folder):
-        for f in files:
-            this_name = '_'.join(f.split("_")[:-1])
-            if root_name == "":
-                root_name = this_name
-            elif this_name != root_name:
-                raise ValueError(f"Cannot confirm all images in {folder} are from the same stack. Ensure tiff filenames are all 'imgname_zX.tiff'")
-            if f.split('.')[-1] == 'tif' or f.split('.')[-1] == 'tiff':
-                tiffs.append(os.path.join(root, f))
-    if not len(tiffs):
-        raise ValueError("No tiffs found!")
-    tiffs.sort()
-    return tiffs
+    ext = ""
+    for f in os.listdir(folder):
+        fname, this_ext = os.path.splitext(f)
+        this_name = '_'.join(fname.split("_")[:-1])
+        if this_ext in exclude_ext:
+            continue
+
+        if root_name == "":
+            root_name = this_name
+        elif this_name != root_name:
+            raise ValueError(f"Cannot confirm all images in {folder} are from the same stack.\nExpected '{root_name}' but got '{this_name}'. Ensure image filenames are all '<imgname>_zX.<ext>'.")
+
+        if ext == "":
+            ext = this_ext
+        elif this_ext != ext:
+            raise ValueError(f"Connot confirm all images in {folder} have the same file extension.\nFirst extension was {ext}. Second extension was {this_ext}.")
+        
+        image_paths.append(os.path.join(folder, f))
+
+    if not len(image_paths):
+        raise ValueError("No images found!")
+
+    image_paths.sort()
+    return image_paths 
 
 
 # Function: get_keyword_files()

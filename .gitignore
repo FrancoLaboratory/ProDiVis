@@ -1,0 +1,4 @@
+*/__pycache__/*
+*data/signal_stack/*.tif
+*data/normalization_stack/*.tif
+*/exported_data/*

@@ -114,7 +114,12 @@ def tiff_dist(normpath, lower, upper, norm_bool):
 # Post-Conditions:
 # Will load in any bitdepth as of 06/19/2024
 def tiff_stats_thresh(normpath, lower, upper, norm_bool):
-    normBW = cv2.cvtColor(cv2.imread(normpath, -1), cv2.COLOR_BGR2GRAY)
+    normBW = cv2.imread(normpath, -1)
+    if len(normBW.shape) != 2:
+        if normBW.shape[-1] == 3:
+            normBW = cv2.cvtColor(normBW, cv2.COLOR_BGR2GRAY)
+        else:
+            raise ValueError(f"Expected an image with 1 or 3 channels, not {normBW.shape[-1]}")
     normBW = normBW.astype(float)
     if type(norm_bool) != int:
         normBW[norm_bool == 0] = np.nan
@@ -125,7 +130,12 @@ def tiff_stats_thresh(normpath, lower, upper, norm_bool):
 
 # Will load in any bitdepth as of 06/19/2024
 def thresh(normpath, lower, upper, norm_bool):
-    normBW = cv2.cvtColor(cv2.imread(normpath, -1), cv2.COLOR_BGR2GRAY)
+    normBW = cv2.imread(normpath, -1)
+    if len(normBW.shape) != 2:
+        if normBW.shape[-1] == 3:
+            normBW = cv2.cvtColor(normBW, cv2.COLOR_BGR2GRAY)
+        else:
+            raise ValueError(f"Expected an image with 1 or 3 channels, not {normBW.shape[-1]}")
     normBW = normBW.astype(float)
     if type(norm_bool) != int:
         normBW[norm_bool == 0] = np.nan
@@ -137,7 +147,12 @@ def thresh(normpath, lower, upper, norm_bool):
 
 # Will load in any bitdepth as of 06/19/2024
 def thresh_multiply(normpath, norm_bool):
-    normBW = cv2.cvtColor(cv2.imread(normpath, -1), cv2.COLOR_BGR2GRAY)
+    normBW = cv2.imread(normpath, -1)
+    if len(normBW.shape) != 2:
+        if normBW.shape[-1] == 3:
+            normBW = cv2.cvtColor(normBW, cv2.COLOR_BGR2GRAY)
+        else:
+            raise ValueError(f"Expected an image with 1 or 3 channels, not {normBW.shape[-1]}")
     normBW = normBW.astype(float)
     if type(norm_bool) != int:
         normBW[norm_bool == 0] = np.nan
@@ -181,7 +196,11 @@ def mean_normalize(tiffpath, normpath, out_dir, thresh, stddevs, raw_norm, len_l
         raise ValueError(f"Z-value for reference tiff ({tiffZ}) is not equal to Z-value for normalization tiff ({normZ})")
 
     # Will load in any bitdepth as of 06/19/2024
-    tiffBW = cv2.cvtColor(cv2.imread(tiffpath, -1), cv2.COLOR_BGR2GRAY)
+    if len(tiffBW.shape) != 2:
+        if tiffBW.shape[-1] == 3:
+            tiffBW = cv2.cvtColor(tiffBW, cv2.COLOR_BGR2GRAY)
+        else:
+            raise ValueError(f"Expected an image with 1 or 3 channels, not {tiffBW.shape[-1]}")
     tiffBW[tiffBW < thresh] = 0
     tiffBW[tiffBW > stddevs] = 0
     tiffBW = (tiffBW / tiff_mean(normpath, thresh, stddevs, raw_norm, norm_bool).astype(np.float64)).astype(np.uint8)

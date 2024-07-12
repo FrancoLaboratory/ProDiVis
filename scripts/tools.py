@@ -125,16 +125,19 @@ def get_keyword_files(folder, key):
 # Description: Performs min-max scaling on img object (pixel array)
 # Pre-Conditions: Img object provided
 # Post-Conditions: Return img object with pixels min-max scaled.
-def min_max_scale(img):
+def min_max_scale(img, dtype = None):
     np.seterr(all = 'raise')
 
     minimum = img.min()
     maximum = img.max()
 
+    if type(dtype) == type(None):
+        dtype = img.dtype
+
     try:
-        dtype = np.iinfo(img.dtype)
+        dtype = np.iinfo(dtype)
     except:
-        dtype = np.finfo(img.dtype)
+        dtype = np.finfo(dtype)
     dtype_max = dtype.max
     
     # The formula for min-max scaling:

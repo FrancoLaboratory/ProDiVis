@@ -82,7 +82,7 @@ def stack(tiff_list, viewpoints, z_mult, norm = False):
                     og_row = int(np.floor(rdx / z_mult))
                     out[rdx][cdx] = img_list[idx][og_row][cdx]
             img_list[idx] = out
-        img_list[idx] = tools.min_max_scale(img_list[idx])
+        img_list[idx] = tools.min_max_scale(img_list[idx], np.float32)
 
     return img_list
 

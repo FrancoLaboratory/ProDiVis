@@ -1,4 +1,12 @@
 */__pycache__/*
 *data/signal_stack/*.tif
 *data/normalization_stack/*.tif
+*data/signal_stack/*.tiff
+*data/normalization_stack/*.tiff
+*data/signal_stack/*.png
+*data/normalization_stack/*.png
+*data/signal_stack/*.jpg
+*data/normalization_stack/*.jpg
+*data/signal_stack/*.jpeg
+*data/normalization_stack/*.jpeg
 */exported_data/*

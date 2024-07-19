@@ -259,6 +259,7 @@ def stack_gui(tiff_list, norm_list):
                 print(f'Error reading image: {path}')
             progress_bar.value += 1
         print(f'Images saved in {new_dir}')
+        return new_dir
 
     
     save_button.on_click(lambda b: save_images(min_val_slider.value, max_val_slider.value))

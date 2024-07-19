@@ -44,7 +44,7 @@ def get_norm_bool_idxs(norm_slice_paths, bool_cutoff):
 # Pre-Conditions: List of path-like strings for tiff and norm, integer threshold
 # Post-Conditions: New directory filled with normalized tiffs created. Returned
 #                  list of path-like strings to generated normalized tiffs.
-def mean_normalizer(tiff_list, norm_list, threshold, outlier_stddevs, raw_norm, ign_mono, ign_thresh = 0.7):
+def mean_normalizer(tiff_list, norm_list, threshold, outlier_stddevs, raw_norm, ign_mono, ign_thresh = 0.7, out_dir=None):
     tiff_dirname = os.path.basename(os.path.dirname(tiff_list[0]))
     norm_dirname = os.path.basename(os.path.dirname(norm_list[0]))
 
@@ -53,7 +53,8 @@ def mean_normalizer(tiff_list, norm_list, threshold, outlier_stddevs, raw_norm, 
               f"{'' if threshold == 0 else f'_t{threshold}'}" + \
               f"{'' if outlier_stddevs == -1 else f'_{outlier_stddevs}std'}"
 
-    out_dir = os.path.abspath(os.path.join(os.path.dirname(tiff_list[0]), '..', dirname))
+    if type(out_dir) == type(None):
+        out_dir = os.path.abspath(os.path.join(os.path.dirname(tiff_list[0]), '..', dirname))
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
     else:
@@ -70,7 +71,7 @@ def mean_normalizer(tiff_list, norm_list, threshold, outlier_stddevs, raw_norm, 
     log_10s = math.floor(math.log(len(tiff_list), 10)) + 14
 
     for tiff, norm in zip(np.sort(tiff_list), np.sort(norm_list)):
-        print(f"\rNormalizing {tiff_dirname} using {norm_dirname} ({count}/{len(tiff_list)})...", end = '\n')
+        print(f"\rNormalizing {tiff_dirname} using {norm_dirname} ({count}/{len(tiff_list)})...", end = '')
         if ign_mono:
             norm_tiffs.append(mean_normalize(tiff, norm, out_dir, threshold, outlier_stddevs, raw_norm, log_10s, norm_bool))
         else:
@@ -183,12 +184,13 @@ def thresh_multiply(normpath, norm_bool):
 def analyze_images(norm_images, threshold):
     below_threshold = []
     for path in norm_images:
-        print(path)
+        print(f"\r{path} ({norm_images.index(path)+1}/{len(norm_images)})", end = '')
         img = cv2.imread(path, -1)
         img = img.astype(np.float32)
         img[img < threshold] = np.nan
         if np.isnan(img).all():
             below_threshold.append(path)
+    print('')
     return below_threshold
 
 
@@ -224,7 +226,7 @@ def mean_normalize(tiffpath, normpath, out_dir, thresh, stddevs, raw_norm, len_l
             raise ValueError(f"Expected an image with 1 or 3 channels, not {tiffBW.shape[-1]}")
     tiffBW[tiffBW < thresh] = 0
     tiffBW[tiffBW > stddevs] = 0
-    tiffBW = (tiffBW / tiff_mean(normpath, thresh, stddevs, raw_norm, norm_bool).astype(np.float64)).astype(np.uint8)
+    tiffBW = (tiffBW / tiff_mean(normpath, thresh, stddevs, raw_norm, norm_bool)).astype(tiffBW.dtype)
     
     savepath = os.path.join(out_dir, f"{os.path.basename(os.path.dirname(tiffpath))}" + \
                                      f"_{'n_' if not raw_norm else 'rn_'}{'' if type(norm_bool) == int else 'im_'}" + \

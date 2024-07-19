@@ -1,1 +1,9 @@
-The `normalization_stack` folder should contain `.tif`s for the normalization signal, with names, dimensions, and Z's corresponding to the slices in the signal_stack folder.
+***Store normalizaiton stack images in this folder.***
+They should have the same base name, followed by an `_Z<N>`
+
+Example
+```
+norm_signal_Z01.tif
+norm_signal_Z02.tif
+...
+```

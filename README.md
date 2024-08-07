@@ -90,13 +90,13 @@ Before running the code, please ensure your filesystem consists of a parent dire
 The repositories containing the glioblastoma and mouse heart datasets can be found at the links below:
  - [**ProDiVis_Images**](https://github.com/FrancoLaboratory/ProDiVis-Images)
 
-#### Creating your own dataset for analysis / visualization by ProDiVis
+### Creating your own dataset for analysis / visualization by ProDiVis
 Assuming that the images are already in a bioformat, export the images in .tiff format into a directory of your choosing. Ensure all filenames are `imgname_ZX.tiff` where `imgname` is the name of the image and `X` is the Z-stack number and focal plane number respectively. For example, `['tumoroid_img24_Z01.tiff', 'tumoroid_img24_Z02.tiff', ...]`. Images should be saved in the `data` directory within the `ProDiVis` directory downloading using git during setup. Within the data directory, the signal of interest (that you would like heatmapped by SNIP) should be in the `signal_stack` subdirectory. The normalization stack (used by SsIN) should be in the `normalization_stack` directory. 
 
 ### 2. Open `Data_Pipeline.ipynb`
 There are two ways to run the `Data_Pipeline.ipynb`:
-1. Jupyter Lab (fully supported): In your shell, type `jupyter lab`. A browser window should open, with a file directory on the left. Double-click on `Data_Pipeline.ipynb` to open it.
-2. [VSCode](https://code.visualstudio.com/) (ipywidget functionality reduced): First ensure that VSCode is [installed](https://code.visualstudio.com/Download). After installation, there are two ways to open a jupyter notebook (any `.ipynb`) in VSCode.
+1. **Jupyter Lab (fully supported)**: In your shell, type `jupyter lab`. A browser window should open, with a file directory on the left. Double-click on `Data_Pipeline.ipynb` to open it.
+2. **[VSCode](https://code.visualstudio.com/) (ipywidget functionality reduced)**: First ensure that VSCode is [installed](https://code.visualstudio.com/Download). After installation, there are two ways to open a jupyter notebook (any `.ipynb`) in VSCode.
 	- Open your file browser (File Explorer on Windows, Finder on Mac), and navigate to the folder where ProDiVis was installed. Right-click and select `VSCode` under the _open\_with_ menu.
 	- In your shell, type `code .`. A new VSCode window should open, with the files in the ProDiVis folder on the left. Double-click on `Data_Pipeline.ipynb` to open it.
 
@@ -111,12 +111,14 @@ insert the path to your signal of interest (SOI) that will be assigned to the `s
 insert the path to your normalization signal (NS) that will be assigned to the `norm_dir` variable
 insert the name of your soi and ns and assign them to the `soi` and `ns` variables, respectively
 
-### 5. The `zmin` and `zmax` variable corresopnd to the minimum and maximum Z-stack number to be included in analysis. For example, if you have a Z-stack with 10 focal planes and you only want to analyze the first 5, `zmin` would be 1 and `zmax` would be 5. If you want to analyze all 10 focal planes, assign `None` to both variables
+### 5. Determine whether to limit optical sections in stack virualization
+The `zmin` and `zmax` variable corresopnd to the minimum and maximum Z-stack number to be included in analysis. For example, if you have a Z-stack with 10 focal planes and you only want to analyze the first 5, `zmin` would be 1 and `zmax` would be 5. If you want to analyze all 10 focal planes, assign `None` to both variables
 
 ### 6. Understanding `z_multiplier`
 proDiVis will generate orthogonal projections of your Z-stack, meaning you will view your Z-stack in x, y, and z planes, simultaneously. Increasing `z_multiplier` will multiply the pixels of your Z-stack in the z direction, meaning that the z plane will be stretched. This is useful if you want to visualize your SOI in the z direction.
 
-### 7. If you want to save your figures, assign `True` to the `save_figs` variable. If not, assign `False`. We reccomend running through the `Data_Pipeline.ipynb` notebook once without saving figures to ensure that the analysis is correct.
+### 7. Determine whether to save figures
+If you want to save your figures, assign `True` to the `save_figs` variable. If not, assign `False`. We reccomend running through the `Data_Pipeline.ipynb` notebook once without saving figures to ensure that the analysis is correct.
 
 ### 8. Adjusting lower and upper thresholds
 Normalization by proDiVis begins with histogram thresholding, a technique that segments an image by setting a range of pixel intensity values to be considered for analysis. The user is required to select a lower and upper boundary which correspond to the minimum and maximum pixel intensity values. ProDiVis excludes any pixel value outside of the user-defined boundaries. We reccomend setting starting with `lower_thresh = 0` and `upper_thresh = 254`. This will include all pixel values that are not saturated in the analysis/normalization
@@ -128,4 +130,5 @@ If you choose to rescale images, they will be saved in a new directory adjacent 
 
 In the next cell, the path to the scaled images will need to be typed and assigned to the `scaled_norm_stack_tiffs` variable (similar to step 4)
 
-### 10. The rest of the `Data_Pipeline.ipynb` file is designed to work seamlessly without the need for any more user input
+### 10. Hit run all cells!
+The rest of the `Data_Pipeline.ipynb` file is designed to work seamlessly without the need for any more user input. After the variables described above have been changed, you are free to run the entire notebook.

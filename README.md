@@ -28,15 +28,15 @@ We run proDiVis and subsequently python through [Anaconda](https://www.anaconda.
 
 Navigate to the directory (folder) where you wish to install proDiVis
 
-## *i* Cloning ProDiVis
+## *i*. Cloning ProDiVis
 
 Using the command line: `git clone https://github.com/FrancoLaboratory/ProDiVis.git`
 
 You should have downloaded all the files needed to run proDiVis inside this folder. Before running proDiVis, you must create a virtual environment and install the required packages. 
 
-## *ii* Creating the Virtual Environment
+## *ii*. Creating the Virtual Environment
 
-### **ii**-a Using pip to create an environment
+### **ii**-a. Using pip to create an environment
 #### Create a virtual environment for ProDiVis.
 Navigate to the directory where ProDiVis was installed. Use the following command to create a virtual environment for ProDiVis. Replace 'env_name' with the desired name of your virtual environment.
 
@@ -53,7 +53,7 @@ Linux or macOS: `source env_name/bin/activate`
 
 `pip install -r <prodivis_repository_path>\requirements.txt`
 
-### *ii*-b Using conda to create an environment
+### *ii*-b. Using conda to create an environment
 Conda is a third-party package management software. It offers advantages in its extensive documentation, robust implementation, and easy integration into a variety of other applications like VSCode, which will be discussed later. If you are a super user, you may even consider using [Mamba](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html), a version of Conda with a C++ backend, allowing for quicker package downloads and faster switching between environments. 
 
 #### Install Conda

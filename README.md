@@ -1,5 +1,7 @@
 # ProDiVis
-A Z-stack validation suite written in the python programming language, designed to be user-friendly for those with little knowledge of image analysis or programming. ProDiVis takes Z-stack outputs acquired from bioformat files (for example: CARL ZEISS .czi or Leica .lif) and generates a heatmap of differentially localized protein(s) normalized to a user-selected fluorescent housekeeping signal. Heatmaps can be generated from any fluorescent Z-tack and serve as an unbiased visualization tool. In addition to producing heatmaps, proDiVis outputs a normalized Z-stack that can be readily used with concurrent microscopy images. Built for data acquired in 'z-stack' form, where different optical sections are imaged individually.
+A Z-stack validation suite written in the python programming language, designed to be user-friendly for those with little knowledge of image analysis or programming. Using 'Section-specific Intensity Normalization' (SsIN), ProDiVis normalizes fluorescent signal from a signal of interest using a normalization signal deemed likely to have similar mean fluorescent intensity across focal plane depth in the signal of interest. SsIN-normalized are then heatmapped using 'Section-Normalized Intensity Projection' (SNIP) to visualize protein distribution before and after normalization. ProDiVis accepts standard file extension (`.tiff`, `.png`, `.jpg`) outputs generated from bioformat files (for example: CARL ZEISS `.czi` or Leica `.lif`) of any bit-depth. 
+
+Heatmaps can be generated from any fluorescent Z-tack and serve as an unbiased visualization tool. While it benefits from its computational and financial accessibility to all labs, ProDiVis assumes that fluorescent scattering in the normalization signal and the signal of interest are similar enough to use the section-specific intensity of the former to normalize the intensity of the latter. Ultimately, it is up to the user to determine whether their samples meet this assumption.
 
 ## Inherent Problems with Confocal Deep Imaging
 A common problem with laser scanning confocal microscopy is the intensity of excitation light and emission signal from fluorophores decrease as they travel through 3D specimens, resulting in weaker signal reaching the detector. To facilitate image interpretation, we developed proDiVis: a visualization algorithm involving focal-plane-specific signal normalization. However, there are limitations to optical sectioning while imaging thick specimens, namely fluorescence intensity loss as a function of imaging depth. The most widely used fluorophores have emission light in the visible spectrum that can only penetrate a limited distance through biological material. This is a known contributor to the fundamental depth limit, caused by several physical properties such as light scattering and absorption. To address the above issues, we developed a computational method to proportionally compare pixel values across the depth of 3D specimens, accounting for the decrease in fluorescence intensity we and others have previously observed. While there are many existing programs or software available for image analysis, to the best of our knowledge, none of them account for loss of signal by normalizing against a housekeeping signal, and many of them are expensive and/or require a high level of technical expertise to use.
@@ -8,9 +10,10 @@ A common problem with laser scanning confocal microscopy is the intensity of exc
 ```
 ipython==8.12.3
 ipywidgets==8.1.3
+jupyterlab==4.2.4
 matplotlib==3.8.4
 numpy==2.0.1
-opencv-python==4.9.0
+opencv-python==4.9.0.80
 pandas==2.2.2
 scipy==1.14.0
 ```

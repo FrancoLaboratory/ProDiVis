@@ -1,4 +1,14 @@
 # ProDiVis
+<img src="" width="250" title="ProDiVis" alt="ProDiVis" align="right" vspace="50">
+
+[![GitHub Release](https://img.shields.io/github/v/release/FrancoLaboratory/ProDiVis)](https://github.com/FrancoLaboratory/ProDiVis/releases/)
+[![Downloads](https://img.shields.io/github/downloads/FrancoLaboratory/ProDiVis/total)](https://github.com/FrancoLaboratory/ProDiVis/releases/)
+[![Licence: MIT](https://img.shields.io/github/license/FrancoLaboratory/ProDiVis)](https://github.com/FrancoLaboratory/ProDiVis/blob/master/LICENSE)
+[![Contributors](https://img.shields.io/github/contributors-anon/FrancoLaboratory/ProDiVis)](https://github.com/FrancoLaboratory/ProDiVis/graphs/contributors)
+[![repo size](https://img.shields.io/github/repo-size/FrancoLaboratory/ProDiVis)](https://github.com/FrancoLaboratory/ProDiVis/)
+[![GitHub stars](https://img.shields.io/github/stars/FrancoLaboratory/ProDiVis?style=social)](https://github.com/FrancoLaboratory/ProDiVis/)
+[![GitHub forks](https://img.shields.io/github/forks/FrancoLaboratory/ProDiVis?style=social)](https://github.com/FrancoLaboratory/ProDiVis/)
+
 A Z-stack validation suite written in the python programming language, designed to be user-friendly for those with little knowledge of image analysis or programming. Using 'Section-specific Intensity Normalization' (SsIN), ProDiVis normalizes fluorescent signal from a signal of interest using a normalization signal deemed likely to have similar mean fluorescent intensity across focal plane depth in the signal of interest. SsIN-normalized are then heatmapped using 'Section-Normalized Intensity Projection' (SNIP) to visualize protein distribution before and after normalization. ProDiVis accepts standard file extension (`.tiff`, `.png`, `.jpg`) outputs generated from bioformat files (for example: CARL ZEISS `.czi` or Leica `.lif`) of any bit-depth. 
 
 Heatmaps can be generated from any fluorescent Z-tack and serve as an unbiased visualization tool. While it benefits from its computational and financial accessibility to all labs, ProDiVis assumes that fluorescent scattering in the normalization signal and the signal of interest are similar enough to use the section-specific intensity of the former to normalize the intensity of the latter. Ultimately, it is up to the user to determine whether their samples meet this assumption.

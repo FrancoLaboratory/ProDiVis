@@ -1,5 +1,5 @@
 # ProDiVis
-<img src="" width="250" title="ProDiVis" alt="ProDiVis" align="right" vspace="50">
+<img src="https://raw.githubusercontent.com/FrancoLaboratory/ProDiVis/main/readme_heatmap.png" width="250" title="ProDiVis" alt="ProDiVis" align="right" vspace="50">
 
 [![GitHub Release](https://img.shields.io/github/v/release/FrancoLaboratory/ProDiVis)](https://github.com/FrancoLaboratory/ProDiVis/releases/)
 [![Downloads](https://img.shields.io/github/downloads/FrancoLaboratory/ProDiVis/total)](https://github.com/FrancoLaboratory/ProDiVis/releases/)
